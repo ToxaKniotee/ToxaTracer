@@ -6,6 +6,8 @@
 </head>
 <body>
 
+{% if user %}
+
 <form>
 	<table>
 		<tr>
@@ -26,6 +28,13 @@
 		</tr>
 	</table>
 </form>
+
+{% else %}
+
+<p>Pleaser login to register users</p>
+<a href="{{ login_url }}">Login!</a>
+
+{% endif %}
 
 </body>
 </html>
