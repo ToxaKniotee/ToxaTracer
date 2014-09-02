@@ -6,9 +6,7 @@
 </head>
 <body>
 
-{% if user %}
-
-<form>
+<form action="/register" method="post">
 	<table>
 		<tr>
 			<td>Nombre:</td>
@@ -26,15 +24,10 @@
 			<td>Confirmar contraseña:</td>
 			<td><input type="password" name="pass_c"></td>
 		</tr>
+
+		<input type="submit" value="Registrar" />
 	</table>
 </form>
-
-{% else %}
-
-<p>Pleaser login to register users</p>
-<a href="{{ login_url }}">Login!</a>
-
-{% endif %}
 
 </body>
 </html>
