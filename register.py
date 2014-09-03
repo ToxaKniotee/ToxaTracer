@@ -5,7 +5,7 @@ import models
 
 template_env = jinja2.Environment( loader = jinja2.FileSystemLoader( os.getcwd() ) )
 
-class RegisterPage(webapp2.RequestHandler):
+class Register(webapp2.RequestHandler):
 	def post(self):
 		username = self.request.get("name")
 		email = self.request.get("email")
@@ -18,4 +18,4 @@ class RegisterPage(webapp2.RequestHandler):
 			return
 		self.response.out.write("Error de registro")
 
-application = webapp2.WSGIApplication( [("/register", RegisterPage)], debug=True )
+application = webapp2.WSGIApplication( [("/register", Register)], debug=True )
