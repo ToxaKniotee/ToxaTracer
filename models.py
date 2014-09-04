@@ -12,6 +12,13 @@ def check_username(user_id):
 		return True
 	return False
 
+def check_email(user_email):
+	q = Query(User).filter("email".user_email)
+	player = q.get()
+	if not player:
+		return True
+	return False
+
 def insert_user(user_name, email, password):
 	temp_user = User()
 	temp_user.user_name = user_name

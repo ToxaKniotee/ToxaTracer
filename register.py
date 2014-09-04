@@ -12,7 +12,7 @@ class Register(webapp2.RequestHandler):
 		password = self.request.get("pass")
 		password_c = self.request.get("pass_c")
 
-		if models.check_username(username) and password == password_c:
+		if models.check_username(username) and password == password_c and models.check_email(email):
 			models.insert_user(username, email, password)
 			self.response.out.write("Registro exitoso")
 			return
