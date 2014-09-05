@@ -13,7 +13,7 @@ def check_username(user_id):
 	return False
 
 def check_email(user_email):
-	q = Query(User).filter("email".user_email)
+	q = db.Query(User).filter("email", user_email)
 	player = q.get()
 	if not player:
 		return True
@@ -25,6 +25,7 @@ def insert_user(user_name, email, password):
 	temp_user.password = password
 	temp_user.email = email
 	temp_user.put()
+	print(temp_user.key());
 
 def login_user(username, password):
 	q = db.Query(User).filter("user_name", username)
