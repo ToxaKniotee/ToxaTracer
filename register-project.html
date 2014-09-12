@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Register Project</title>
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="js/addOptions.js"></script>
+</head>
+<body onload="loadComboBox();">
+
+<form action="/register-project" method="post">
+	<table>
+		<tr>
+			<td>Project Name</td>
+			<td><input type="text" name="project_name"></td>
+		</tr><tr>
+			<td>Description</td>
+			<td><textarea name="project_description"></textarea></td>
+		</tr><tr>
+			<td>Start Date</td>
+			<td><input type="date" name="project_start_date"></td>
+		</tr><tr>
+			<td>Final Date</td>
+			<td><input type="date" name="project_end_date"></td>
+		</tr><tr>
+			<td>Cliente o mercado</td>
+			<td><input type="text" name="project_client"></td>
+		</tr><tr>
+			<td>Arquitecture</td>
+			<td><select id="arq" name="project_arq"></select></td>
+		</tr><tr>
+		</tr><tr>
+			<td>Lenguaje</td>
+			<td><select id="language" name="project_lang"></select></td>
+		</tr>
+	</table>
+	<div><ul id="options"></ul></div>
+	<input type="submit" value="Submit!">
+</form>
+
+</body>
+</html>

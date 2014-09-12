@@ -11,7 +11,8 @@ class Login(webapp2.RequestHandler):
 		password = self.request.get("pass")
 
 		if (username != "" and password != "") and models.login_user(username, password):
-			self.response.out.write("Login exitoso")
+			template = template_env.get_template("login-r.html")
+			self.response.out.write(template.render())
 			return
 		self.response.out.write("Error de login")
 

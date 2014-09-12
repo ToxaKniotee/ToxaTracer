@@ -5,6 +5,12 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /js
+  static_dir: js
+- url: /register-project
+  script: register-project.application
+- url: /register-project-page
+  script: register-project-page.application
 - url: /login
   script: login.application
 - url: /register
