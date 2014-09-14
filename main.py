@@ -5,7 +5,7 @@ import models
 
 template_env = jinja2.Environment( loader = jinja2.FileSystemLoader( os.getcwd() ) )
 
-class MainPage(webapp2.RequestHandler):
+class IndexPage(webapp2.RequestHandler):
 
 	def get(self):
 		template = template_env.get_template("html/index.html")
@@ -22,8 +22,7 @@ class LoginPage(webapp2.RequestHandler):
 		password = self.request.get("pass")
 
 		if( username != "" and password != "" ) and models.login_user(username, password):
-			template = template_env.get_template("html/main.html")
-			self.response.out.write( template.render() )
+			self.redirect( "/main" )
 			return
 
 class RegisterPage(webapp2.RequestHandler):
@@ -65,4 +64,10 @@ class RegisterProject( webapp2.RequestHandler ):
 				return
 			self.response.out.write( "Error" )
 
-application = webapp2.WSGIApplication( [ ("/", MainPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ) ], debug=True )
+class MainPage( webapp2.RequestHandler ):
+
+	def get( self ):
+		template = template_env.get_template( "html/main.html" )
+		self.response.out.write( template.render() )
+
+application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ) ], debug=True )
