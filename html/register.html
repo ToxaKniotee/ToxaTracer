@@ -6,6 +6,10 @@
 </head>
 <body>
 
+ {% if message %}
+ 	<p>{{ message }}</p>
+ {% endif %} 
+
 <form action="/register" method="post">
 	<table>
 		<tr>
@@ -24,8 +28,9 @@
 			<td>Confirmar contraseña:</td>
 			<td><input type="password" name="pass_c"></td>
 		</tr>
-
-		<input type="submit" value="Registrar" />
+		<tr>
+			<td colspan="2"><input type="submit" value="Registrar" /></td>
+		</tr>
 	</table>
 </form>
 

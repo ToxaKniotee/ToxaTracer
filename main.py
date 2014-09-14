@@ -2,6 +2,7 @@ import webapp2
 import jinja2
 import os
 import models
+from gaesessions import get_current_session
 
 template_env = jinja2.Environment( loader = jinja2.FileSystemLoader( os.getcwd() ) )
 
@@ -25,6 +26,13 @@ class LoginPage(webapp2.RequestHandler):
 			self.redirect( "/main" )
 			return
 
+		context = {
+			"message": "User/Password incorrectos"
+		}
+
+		template = template_env.get_template("html/login.html")
+		self.response.out.write( template.render( context ) )
+
 class RegisterPage(webapp2.RequestHandler):
 
 	def get(self):
@@ -37,11 +45,35 @@ class RegisterPage(webapp2.RequestHandler):
 		password   = self.request.get( "pass" )
 		password_c = self.request.get( "pass_c" )
 
-		if models.check_username( username ) and password == password_c and models.check_email( email ):
+		if( not models.check_username( username ) ):
+			context = {
+				"message": "Username already exist"
+			}
+
+			template = template_env.get_template("html/register.html")
+			self.response.out.write( template.render( context ) )
+			return
+
+		if( not models.check_email( email ) ):
+			context = {
+				"message": "Email already exist"
+			}
+
+			template = template_env.get_template("html/register.html")
+			self.response.out.write( template.render( context ) )
+			return
+
+		if password == password_c:
 			models.insert_user( username, email, password )
 			self.response.out.write( "Registro Exitoso" )
 			return
-		self.response.out.write( "Error de registro" )
+
+		context = {
+			"message": "An Error ocurred"
+		}
+
+		template = template_env.get_template("html/register.html")
+		self.response.out.write( template.render( context ) )
 
 class RegisterProject( webapp2.RequestHandler ):
 
@@ -67,7 +99,14 @@ class RegisterProject( webapp2.RequestHandler ):
 class MainPage( webapp2.RequestHandler ):
 
 	def get( self ):
+		session = get_current_session()
+		global_user = session.get( "global_user" )
+
+		context = {
+			"Username": global_user.user_name
+		}
+
 		template = template_env.get_template( "html/main.html" )
-		self.response.out.write( template.render() )
+		self.response.out.write( template.render( context ) )
 
 application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ) ], debug=True )
