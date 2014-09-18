@@ -1,5 +1,6 @@
 from google.appengine.ext import db
 from gaesessions import get_current_session
+import datetime
 
 class User(db.Model):
 	user_name = db.StringProperty()
@@ -19,10 +20,13 @@ def add_project(project_name, project_description, project_start_date, project_e
 	global_user = session.get("global_user", 0)
 	if not global_user:
 		return False
-	temp_project = Project()
-	temp_project.name = project_name
-	temp_project.client = project_client
-	temp_project.user = global_user
+	temp_project             = Project()
+	temp_project.description = project_description
+	temp_project.name        = project_name
+	temp_project.client      = project_client
+	temp_project.user        = global_user
+	temp_project.start_date  = datetime.datetime.strptime( project_start_date, "%Y-%m-%d" ).date()
+	temp_project.end_date    = datetime.datetime.strptime( project_end_date, "%Y-%m-%d" ).date()
 	temp_project.put()
 	return True
 
