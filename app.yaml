@@ -5,14 +5,8 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /login
-  script: login.application
-- url: /register
-  script: register.application
-- url: /login-Page
-  script: login-Page.application
-- url: /register-Page
-  script: register-Page.application
+- url: /js
+  static_dir: js
 - url: .*
   script: main.application
 
