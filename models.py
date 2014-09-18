@@ -73,7 +73,7 @@ def insert_user(user_name, email, password):
 
 	#Creamos el correo
 
-	msg = "Activa tu correo en el siguiente enlace\n http://toxa-tracer.appspot.com/activate?v=" + (temp_user.key().id)
+	msg = "Activa tu correo en el siguiente enlace\n http://toxa-tracer.appspot.com/activate?v=" + str(temp_user.key())
 	mail.send_mail(
 		sender = "admin@toxa-tracer.appspotmail.com",
 		to = temp_user.email,
