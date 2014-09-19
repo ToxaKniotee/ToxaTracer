@@ -33,7 +33,8 @@ def add_project(project_name, project_description, project_start_date, project_e
 def return_projects():
 	session = get_current_session()
 	global_user = session.get("global_user", 0)
-	q = dq.Query(Project).filter("user", global_user)
+	q = db.Query(Project).filter("user", global_user)
+	q.get()
 	return q
 
 def check_projects(project_name):

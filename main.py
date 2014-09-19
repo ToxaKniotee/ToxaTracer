@@ -101,9 +101,11 @@ class MainPage( webapp2.RequestHandler ):
 	def get( self ):
 		session = get_current_session()
 		global_user = session.get( "global_user" )
+		projects = models.return_projects();
 
 		context = {
-			"Username": global_user.user_name
+			"Username": global_user.user_name,
+			"projects": projects
 		}
 
 		template = template_env.get_template( "html/main.html" )
