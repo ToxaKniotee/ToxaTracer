@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ name }}</title>
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="../js/addReq.js"></script>
+</head>
+<body>
+
+<h1>{{ name }}</h1>
+
+<h2>Requerimientos no funcionales</h2>
+
+<input type="text" id="txt_add_req">&nbsp;<input type="button" value="Agregar requerimiento" onclick="addReq();">
+
+<form action="/req" method="post"><ul id="table"></ul><input type="submit" value="submit"></form>
+
+</body>
+</html>

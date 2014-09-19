@@ -92,7 +92,7 @@ class RegisterProject( webapp2.RequestHandler ):
 
 		if models.check_projects( project_name ):
 			if models.add_project( project_name, project_description, project_start_date, project_end_date, project_client, project_arq, project_lang ):
-				self.response.out.write( "Projecto Agregado" )
+				self.redirect( "/req" )
 				return
 			self.response.out.write( "Error" )
 
@@ -111,4 +111,31 @@ class MainPage( webapp2.RequestHandler ):
 		template = template_env.get_template( "html/main.html" )
 		self.response.out.write( template.render( context ) )
 
-application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ) ], debug=True )
+class ReqPage( webapp2.RequestHandler ):
+
+	def get( self ):
+		session = get_current_session()
+		global_project = session.get( "global_project" )
+
+		context = {
+			"name": global_project.name
+		}
+
+		template = template_env.get_template( "html/project-req.html" )
+		self.response.out.write( template.render(context) )
+
+	def post( self ):
+		session = get_current_session()
+		global_project = session.get( "global_project" )
+		count = self.request.get( "count" )
+		l = []
+
+		for i in xrange( 0, int( count ) ):
+			l.append( self.request.get( "req_" + str( i ) ) )
+
+		global_project.no_func_req = l
+		global_project.put()
+		self.redirect( "/main" )
+
+
+application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ), ( "/req", ReqPage ) ], debug=True )
