@@ -92,7 +92,7 @@ class RegisterProject( webapp2.RequestHandler ):
 
 		if models.check_projects( project_name ):
 			if models.add_project( project_name, project_description, project_start_date, project_end_date, project_client, project_arq, project_lang ):
-				self.response.out.write( "Projecto Agregado" )
+				self.redirect( "/req" )
 				return
 			self.response.out.write( "Error" )
 
@@ -101,9 +101,11 @@ class MainPage( webapp2.RequestHandler ):
 	def get( self ):
 		session = get_current_session()
 		global_user = session.get( "global_user" )
+		projects = models.return_projects();
 
 		context = {
-			"Username": global_user.user_name
+			"Username": global_user.user_name,
+			"projects": projects
 		}
 
 		template = template_env.get_template( "html/main.html" )
@@ -116,4 +118,31 @@ class ActivatePage( webapp2.RequestHandler ):
 		models.activate_user( key )
 		self.redirect( "/login" )
 
-application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ), ( "/activate", ActivatePage ) ], debug=True )
+class ReqPage( webapp2.RequestHandler ):
+
+	def get( self ):
+		session = get_current_session()
+		global_project = session.get( "global_project" )
+
+		context = {
+			"name": global_project.name
+		}
+
+		template = template_env.get_template( "html/project-req.html" )
+		self.response.out.write( template.render(context) )
+
+	def post( self ):
+		session = get_current_session()
+		global_project = session.get( "global_project" )
+		count = self.request.get( "count" )
+		l = []
+
+		for i in xrange( 0, int( count ) ):
+			l.append( self.request.get( "req_" + str( i ) ) )
+
+		global_project.no_func_req = l
+		global_project.put()
+		self.redirect( "/main" )
+
+
+application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ), ( "/req", ReqPage ), ( "/activate", ActivatePage ) ], debug=True )

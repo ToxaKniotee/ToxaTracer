@@ -17,6 +17,7 @@ class Project(db.Model):
 	end_date    = db.DateProperty()
 	client      = db.StringProperty()
 	user        = db.ReferenceProperty(User, collection_name = "projects")
+	no_func_req = db.StringListProperty()
 
 def add_project(project_name, project_description, project_start_date, project_end_date, project_client, project_arq, project_lang):
 	session = get_current_session()
@@ -31,12 +32,16 @@ def add_project(project_name, project_description, project_start_date, project_e
 	temp_project.start_date  = datetime.datetime.strptime( project_start_date, "%Y-%m-%d" ).date()
 	temp_project.end_date    = datetime.datetime.strptime( project_end_date, "%Y-%m-%d" ).date()
 	temp_project.put()
+	session = get_current_session()
+	global_project = session.get( "global_project" )
+	session["global_project"] = temp_project
 	return True
 
 def return_projects():
 	session = get_current_session()
 	global_user = session.get("global_user", 0)
-	q = dq.Query(Project).filter("user", global_user)
+	q = db.Query(Project).filter("user", global_user)
+	q.get()
 	return q
 
 def check_projects(project_name):

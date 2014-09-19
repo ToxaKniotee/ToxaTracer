@@ -7,6 +7,36 @@
 <body>
 
 <h1>Bienvenido {{ Username }}</h1>
+
+<h2>Projects</h2>
+
+{% if projects and projects.count() > 0 %}
+
+	<table border="1" cellpadding="10px" style="border-collapse: collapse;">
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Client</th>
+		</tr>
+		
+		{% for project in projects %}
+
+			<tr>
+				<td>{{ project.name }}</td>
+				<td>{{ project.description }}</td>
+				<td>{{ project.client }}</td>
+			</tr>
+
+		{% endfor %}
+
+	</table>
+
+{% else %}
+
+	<p>There are no projects</p>
+
+{% endif %}
+<br />
 <a href="/register-project">Registrar Projecto</a>
 
 </body>
