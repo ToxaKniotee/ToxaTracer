@@ -96,3 +96,8 @@ def login_user(username, password):
 	global_user = session.get("global_user", 0)
 	session["global_user"] = q[0]
 	return True
+
+def activate_user( key ):
+	user = db.get( key )
+	user.activated = True
+	user.put()

@@ -27,7 +27,7 @@ class LoginPage(webapp2.RequestHandler):
 			return
 
 		context = {
-			"message": "User/Password incorrectos"
+			"message": "Wrong username/password or account not activated yet"
 		}
 
 		template = template_env.get_template("html/login.html")
@@ -109,4 +109,11 @@ class MainPage( webapp2.RequestHandler ):
 		template = template_env.get_template( "html/main.html" )
 		self.response.out.write( template.render( context ) )
 
-application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ) ], debug=True )
+class ActivatePage( webapp2.RequestHandler ):
+
+	def get( self ):
+		key = self.request.get( "v" )
+		models.activate_user( key )
+		self.redirect( "/login" )
+
+application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ), ( "/activate", ActivatePage ) ], debug=True )
