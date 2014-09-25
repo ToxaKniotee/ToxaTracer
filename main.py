@@ -117,8 +117,18 @@ class ReqPage( webapp2.RequestHandler ):
 		session = get_current_session()
 		global_project = session.get( "global_project" )
 
+		v = self.request.get( "v" )
+
+		if v:
+			del global_project.no_func_req[int( v ) - 1]
+			global_project.put()
+			session["global_project"] = global_project
+			self.redirect( "/req" )
+			return
+
 		context = {
-			"name": global_project.name
+			"name": global_project.name,
+			"req": global_project.no_func_req
 		}
 
 		template = template_env.get_template( "html/project-req.html" )
@@ -127,15 +137,9 @@ class ReqPage( webapp2.RequestHandler ):
 	def post( self ):
 		session = get_current_session()
 		global_project = session.get( "global_project" )
-		count = self.request.get( "count" )
-		l = []
-
-		for i in xrange( 0, int( count ) ):
-			l.append( self.request.get( "req_" + str( i ) ) )
-
-		global_project.no_func_req = l
+		global_project.no_func_req.append( self.request.get( "txt_add_req" ) )
 		global_project.put()
-		self.redirect( "/main" )
-
+		session["global_project"] = global_project
+		self.redirect( "/req" )
 
 application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ), ( "/req", ReqPage ) ], debug=True )

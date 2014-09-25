@@ -28,6 +28,7 @@ def add_project(project_name, project_description, project_start_date, project_e
 	temp_project.user        = global_user
 	temp_project.start_date  = datetime.datetime.strptime( project_start_date, "%Y-%m-%d" ).date()
 	temp_project.end_date    = datetime.datetime.strptime( project_end_date, "%Y-%m-%d" ).date()
+	temp_project.no_func_req = []
 	temp_project.put()
 	session = get_current_session()
 	global_project = session.get( "global_project" )
@@ -71,7 +72,6 @@ def insert_user(user_name, email, password):
 	temp_user.password = password
 	temp_user.email = email
 	temp_user.put()
-	print(temp_user.key());
 
 def login_user(username, password):
 	q = db.Query(User).filter("user_name", username)
