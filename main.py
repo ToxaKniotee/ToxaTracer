@@ -2,6 +2,7 @@ import webapp2
 import jinja2
 import os
 import models
+import time
 from gaesessions import get_current_session
 
 template_env = jinja2.Environment( loader = jinja2.FileSystemLoader( os.getcwd() ) )
@@ -117,8 +118,8 @@ class ReqPage( webapp2.RequestHandler ):
 		session = get_current_session()
 		global_project = session.get( "global_project" )
 
+		#Se elimina el requerimiento
 		v = self.request.get( "v" )
-
 		if v:
 			del global_project.no_func_req[int( v ) - 1]
 			global_project.put()
@@ -126,9 +127,20 @@ class ReqPage( webapp2.RequestHandler ):
 			self.redirect( "/req" )
 			return
 
+		# Se elimina un rol
+		d = self.request.get( "d" )
+		if d:
+			models.delete_role( d )
+			self.redirect( "/req" )
+			return
+
+		# Una espera insignificativa para que le de tiempo a la base de datos de actualizar la informacion
+		time.sleep( 0.1 )
+
 		context = {
 			"name": global_project.name,
-			"req": global_project.no_func_req
+			"req": global_project.no_func_req,
+			"roles": global_project.roles
 		}
 
 		template = template_env.get_template( "html/project-req.html" )
@@ -137,7 +149,16 @@ class ReqPage( webapp2.RequestHandler ):
 	def post( self ):
 		session = get_current_session()
 		global_project = session.get( "global_project" )
-		global_project.no_func_req.append( self.request.get( "txt_add_req" ) )
+		type_post = self.request.get( "type_post" )
+
+		# Requerimientos no funcionales
+		if type_post == "type_req":
+			global_project.no_func_req.append( self.request.get( "txt_add_req" ) )
+
+		# Roles
+		if type_post == "type_role":
+			models.add_role( self.request.get( "txt_user" ), global_project, self.request.get( "txt_role" ) )
+
 		global_project.put()
 		session["global_project"] = global_project
 		self.redirect( "/req" )

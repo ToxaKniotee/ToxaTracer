@@ -12,7 +12,8 @@
 <h2>Requerimientos no funcionales</h2>
 
 <form action="/req" method="post">
-	<input type="text" id="txt_add_req" name="txt_add_req">
+	<input type="hidden" name="type_post" value="type_req">
+	<input type="text" name="txt_add_req">
 	<input type="submit" value="submit">
 </form>
 
@@ -29,6 +30,35 @@
 	</ul>
 
 {% endif %}
+
+<h2>Roles</h2>
+
+<form action="/req" method="post">
+	<input type="hidden" name="type_post" value="type_role">
+	User: <input type="text" name="txt_user"><br />
+	Rol: &nbsp;&nbsp;<input type="text" name="txt_role"><br />
+	<input type="submit" value="Submit!">
+	<br />
+</form>
+
+<table border="1">
+	<tr>
+		<th>User</th>
+		<th>Rol</th>
+		<th>Action</th>
+	</tr>
+
+	{% for role in roles %}
+
+		<tr>
+			<td>{{role.user}}</td>
+			<td>{{role.role}}</td>
+			<td><a href="/req?d={{ role.key() }}">Delete</a></td>
+		</tr>
+
+	{% endfor %}
+
+</table>
 
 </body>
 </html>

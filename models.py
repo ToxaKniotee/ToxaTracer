@@ -16,6 +16,23 @@ class Project(db.Model):
 	user        = db.ReferenceProperty(User, collection_name = "projects")
 	no_func_req = db.StringListProperty()
 
+class Roles( db.Model ):
+	user = db.StringProperty()
+	project = db.ReferenceProperty( Project, collection_name = "roles" )
+	role = db.StringProperty()
+
+def add_role( user, project, role ):
+	print( "Hola" )
+	temp_role = Roles()
+	temp_role.user = user
+	temp_role.project = project
+	temp_role.role = role
+	temp_role.put()
+
+def delete_role( key ):
+	temp_role = db.get( key )
+	temp_role.delete()
+
 def add_project(project_name, project_description, project_start_date, project_end_date, project_client, project_arq, project_lang):
 	session = get_current_session()
 	global_user = session.get("global_user", 0)
