@@ -33,10 +33,16 @@
 
 <h2>Roles</h2>
 
+{% if err_role %}
+	
+	<p>{{ err_role }}</p>
+
+{% endif %}
+
 <form action="/req" method="post">
 	<input type="hidden" name="type_post" value="type_role">
-	User: <input type="text" name="txt_user"><br />
-	Rol: &nbsp;&nbsp;<input type="text" name="txt_role"><br />
+	Email: <input type="text" name="txt_user"><br />
+	Rol: &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="txt_role"><br />
 	<input type="submit" value="Submit!">
 	<br />
 </form>
@@ -51,7 +57,7 @@
 	{% for role in roles %}
 
 		<tr>
-			<td>{{role.user}}</td>
+			<td>{{role.user.user_name}}</td>
 			<td>{{role.role}}</td>
 			<td><a href="/req?d={{ role.key() }}">Delete</a></td>
 		</tr>

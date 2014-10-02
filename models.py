@@ -17,12 +17,17 @@ class Project(db.Model):
 	no_func_req = db.StringListProperty()
 
 class Roles( db.Model ):
-	user = db.StringProperty()
+	user = db.ReferenceProperty( User, collection_name = "works" )
 	project = db.ReferenceProperty( Project, collection_name = "roles" )
 	role = db.StringProperty()
 
-def add_role( user, project, role ):
-	print( "Hola" )
+def add_role( user_email, project, role ):
+	#recuperamos el usuario
+	q = db.Query( User ).filter( "email", user_email )
+	q.get()
+	user = q[0]
+
+	#Insertamos el nuevo rol
 	temp_role = Roles()
 	temp_role.user = user
 	temp_role.project = project
@@ -32,6 +37,13 @@ def add_role( user, project, role ):
 def delete_role( key ):
 	temp_role = db.get( key )
 	temp_role.delete()
+
+def check_user( email ):
+	q = db.Query( User ).filter( "email", email )
+	user = q.get()
+	if not user:
+		return False
+	return True
 
 def add_project(project_name, project_description, project_start_date, project_end_date, project_client, project_arq, project_lang):
 	session = get_current_session()

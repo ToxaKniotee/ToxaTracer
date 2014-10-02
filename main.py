@@ -157,7 +157,18 @@ class ReqPage( webapp2.RequestHandler ):
 
 		# Roles
 		if type_post == "type_role":
-			models.add_role( self.request.get( "txt_user" ), global_project, self.request.get( "txt_role" ) )
+			if models.check_user( self.request.get( "txt_user" ) ):
+				models.add_role( self.request.get( "txt_user" ), global_project, self.request.get( "txt_role" ) )
+			else:
+				context = {
+					"err_role": "El usuario no existe, tiene que ser un usuario registrado",
+					"name": global_project.name,
+					"req": global_project.no_func_req,
+					"roles": global_project.roles
+				}
+				template = template_env.get_template( "html/project-req.html" )
+				self.response.out.write( template.render( context ) )
+				return
 
 		global_project.put()
 		session["global_project"] = global_project
