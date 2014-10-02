@@ -3,11 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<title>Registra tu proyecto</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 
  {% if message %}
- 	<p>{{ message }}</p>
+ 	<div class="error">{{ message }}</div>
  {% endif %} 
 
 <form action="/register" method="post">

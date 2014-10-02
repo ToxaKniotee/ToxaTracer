@@ -4,6 +4,7 @@
 	<title>{{ name }}</title>
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="../js/addReq.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 
@@ -35,7 +36,7 @@
 
 {% if err_role %}
 	
-	<p>{{ err_role }}</p>
+	<div class="error">{{ err_role }}</div>
 
 {% endif %}
 
