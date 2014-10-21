@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
 	<title>{{ name }}</title>
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="../js/addReq.js"></script>
@@ -66,5 +67,52 @@
 
 </table>
 
+<hr />
+<h2>Releases</h2>
+
+<form action="/req" method="post">
+	<input type="hidden" name="type_post" value="release" />
+	<table>
+		<tr>
+			<td>Nombre:</td>
+			<td><input type="text" name="name" /></td>
+		</tr>
+		<tr>
+			<td>Descripción:</td>
+			<td><input type="text" name="description" /></td>
+		</tr>
+		<tr>
+			<td>Fecha del release: </td>
+			<td><input type="date" name="release_date" /></td>
+		</tr>
+		<tr>
+			<td>Procentaje: </td>
+			<td><input type="text" name="percentage" /></td>
+		</tr>
+		<tr><td colspan="2"><input type="submit" value="Agregar!" /></td></tr>
+	</table>
+</form>
+
+<table border="1">
+	<tr>
+		<th>Nombre</th>
+		<th>Descripción</th>
+		<th>Fecha del Release</th>
+		<th>Porcentaje</th>
+	</tr>
+	{{releases}}
+	{% for release in releases %}
+
+		<tr>
+			<td>{{release.name}}</td>
+			<td>{{release.description}}</td>
+			<td>{{release.release_date}}</td>
+			<td>{{release.percentage}}</td>
+		</tr>
+
+	{% endfor %}
+
+</table>
+
 </body>
-</html>
+</html>	

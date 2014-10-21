@@ -21,6 +21,22 @@ class Roles( db.Model ):
 	project = db.ReferenceProperty( Project, collection_name = "roles" )
 	role = db.StringProperty()
 
+class Release( db.Model ):
+	name         = db.StringProperty()
+	description  = db.StringProperty()
+	release_date = db.DateProperty()
+	percentage   = db.IntegerProperty()
+	project      = db.ReferenceProperty( Project, collection_name = "releases" )
+
+def add_release( name, description, release_date, percentage, project ):
+	temp_release = Release()
+	temp_release.name = name
+	temp_release.description = description
+	temp_release.release_date = datetime.datetime.strptime( release_date, "%Y-%m-%d" ).date()
+	temp_release.percentage = int( percentage )
+	temp_release.project = project
+	temp_release.put();
+
 def add_role( user_email, project, role ):
 	#recuperamos el usuario
 	q = db.Query( User ).filter( "email", user_email )

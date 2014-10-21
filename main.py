@@ -140,7 +140,8 @@ class ReqPage( webapp2.RequestHandler ):
 		context = {
 			"name": global_project.name,
 			"req": global_project.no_func_req,
-			"roles": global_project.roles
+			"roles": global_project.roles,
+			"releases": global_project.releases.order( "release_date" )
 		}
 
 		template = template_env.get_template( "html/project-req.html" )
@@ -169,6 +170,16 @@ class ReqPage( webapp2.RequestHandler ):
 				template = template_env.get_template( "html/project-req.html" )
 				self.response.out.write( template.render( context ) )
 				return
+
+		#Releases
+		if type_post == "release":
+			temp_name = self.request.get( "name" )
+			temp_description = self.request.get( "description" )
+			temp_release_date = self.request.get( "release_date" )
+			temp_percentage = self.request.get( "percentage" )
+
+			models.add_release( temp_name, temp_description, temp_release_date, temp_percentage, global_project )
+			self.redirect( "/req" )
 
 		global_project.put()
 		session["global_project"] = global_project
