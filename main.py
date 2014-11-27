@@ -10,14 +10,12 @@ template_env = jinja2.Environment( loader = jinja2.FileSystemLoader( os.getcwd()
 class IndexPage(webapp2.RequestHandler):
 
 	def get(self):
-		template = template_env.get_template("html/index.html")
-		self.response.out.write( template.render() )
+		renderPage( self, "index.html" )
 
 class LoginPage(webapp2.RequestHandler):
 
 	def get(self):
-		template = template_env.get_template("html/login.html")
-		self.response.out.write( template.render() )
+		renderPage( self, "login.html" )
 
 	def post(self):
 		username = self.request.get("name")
@@ -27,18 +25,12 @@ class LoginPage(webapp2.RequestHandler):
 			self.redirect( "/main" )
 			return
 
-		context = {
-			"message": "User/Password incorrectos"
-		}
-
-		template = template_env.get_template("html/login.html")
-		self.response.out.write( template.render( context ) )
+		renderPage( self, "login.html", {"message": "Usuario o password incorrectos"} )
 
 class RegisterPage(webapp2.RequestHandler):
 
 	def get(self):
-		template = template_env.get_template("html/register.html")
-		self.response.out.write( template.render() )
+		renderPage( self, "register.html" )
 
 	def post( self ):
 		username   = self.request.get( "name" )
@@ -47,21 +39,11 @@ class RegisterPage(webapp2.RequestHandler):
 		password_c = self.request.get( "pass_c" )
 
 		if( not models.check_username( username ) ):
-			context = {
-				"message": "Username already exist"
-			}
-
-			template = template_env.get_template("html/register.html")
-			self.response.out.write( template.render( context ) )
+			renderPage( self, "register.html", {"message": "El nombre de usuaio ya existe"} )
 			return
 
 		if( not models.check_email( email ) ):
-			context = {
-				"message": "Email already exist"
-			}
-
-			template = template_env.get_template("html/register.html")
-			self.response.out.write( template.render( context ) )
+			renderPage( self, "register.html", {"message": "El Email ya existe"} )
 			return
 
 		if password == password_c:
@@ -69,18 +51,12 @@ class RegisterPage(webapp2.RequestHandler):
 			self.response.out.write( "Registro Exitoso" )
 			return
 
-		context = {
-			"message": "An Error ocurred"
-		}
-
-		template = template_env.get_template("html/register.html")
-		self.response.out.write( template.render( context ) )
+		renderPage( self, "register.html", {"message": "Un error a ocurrido"} )
 
 class RegisterProject( webapp2.RequestHandler ):
 
 	def get( self ):
-		template = template_env.get_template( "html/register-project.html" )
-		self.response.out.write( template.render() )
+		renderPage( self, "register-project.html" )
 
 	def post( self ):
 		project_name        = self.request.get("project_name")
@@ -104,13 +80,7 @@ class MainPage( webapp2.RequestHandler ):
 		global_user = session.get( "global_user" )
 		projects = models.return_projects();
 
-		context = {
-			"Username": global_user.user_name,
-			"projects": projects
-		}
-
-		template = template_env.get_template( "html/main.html" )
-		self.response.out.write( template.render( context ) )
+		renderPage( self, "main.html", {"Username": global_user.user_name, "projects": projects} )
 
 class ReqPage( webapp2.RequestHandler ):
 
@@ -144,8 +114,7 @@ class ReqPage( webapp2.RequestHandler ):
 			"releases": global_project.releases.order( "release_date" )
 		}
 
-		template = template_env.get_template( "html/project-req.html" )
-		self.response.out.write( template.render(context) )
+		renderPage( self, "project-req.html", context )
 
 	def post( self ):
 		session = get_current_session()
@@ -167,8 +136,7 @@ class ReqPage( webapp2.RequestHandler ):
 					"req": global_project.no_func_req,
 					"roles": global_project.roles
 				}
-				template = template_env.get_template( "html/project-req.html" )
-				self.response.out.write( template.render( context ) )
+				renderPage( self, "project-req.html", context )
 				return
 
 		#Releases
@@ -184,5 +152,9 @@ class ReqPage( webapp2.RequestHandler ):
 		global_project.put()
 		session["global_project"] = global_project
 		self.redirect( "/req" )
+
+def renderPage( app, web_page, context = {} ):
+	template = template_env.get_template( "html/" + web_page )
+	app.response.out.write( template.render( context ) )
 
 application = webapp2.WSGIApplication( [ ("/", IndexPage), ("/login", LoginPage), ( "/register", RegisterPage ), ( "/register-project", RegisterProject ), ( "/main", MainPage ), ( "/req", ReqPage ) ], debug=True )
