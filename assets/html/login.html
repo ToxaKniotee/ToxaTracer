@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Log in</title>
+	<link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+	<br><br>
+	<div class="container">
+		<div align="center"><img class="img-responsive" alt="Imagen responsive" src="assets/img/banner.png"></div>
+
+		<form class="form-horizontal" role="form" action="/" method="post">
+			<div class="form-group">
+				<label for="ejemplo_email_3" class="col-sm-5 control-label">Email</label>
+				<div class="col-sm-2 ">
+					<input type="email" class="form-control" name="email_login" id="email_login"
+						placeholder="Enter your email">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="ejemplo_password_3" class="col-sm-5 control-label">Pass</label>
+				<div class="col-sm-2">
+					<input type="password" class="form-control" name="pass_login" id="pass_login"
+						placeholder="Enter your pass">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-lg-offset-5 col-sm-1">
+					<button type="submit" class="btn btn-default">Log in</button>
+				</div>
+			</div>
+
+			<div class="col-lg-offset-5  col-sm-1" > <a href="/register"><u>Register</u></a> </div><br><br>
+		</form>
+
+		{# Mostramos el mensaje de error en caso de que no se haya podido iniciar sesion #}
+		{% if error_message %}
+		<div align="center" id="feedback_login">
+			<div class="alert alert-danger show">Error: user or password not valids!</div>
+		</div>
+		{% endif %}
+
+	</div>
+</body>
+
+</html>

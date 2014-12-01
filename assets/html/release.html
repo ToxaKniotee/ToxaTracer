@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Release</title>
+      <!-- Bootstrap core CSS -->
+      <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css">
+      <link href="assets/css/datepicker.css" rel="stylesheet">
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/smoothscroll.js"></script>
+      <script type="text/javascript" src="assets/js/modernizr.custom.js"></script>
+      <script src="assets/js/bootstrap-datepicker.js"></script>
+   </head>
+   <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
+      <script type="text/javascript"></script>
+      <nav class="navbar navbar-default navbar-fixed-top " role="navigation">
+         <!-- El logotipo y el icono que despliega el menú se agrupan
+            para mostrarlos mejor en los dispositivos móviles -->
+         <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+               data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Desplegar navegación</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a href="#portafolio" class="smoothScroll"><img  src="assets/img/menu.png" class="img-responsive" alt="Imagen responsive"></a>
+         </div>
+         <!-- Agrupar los enlaces de navegación, los formularios y cualquier
+            otro elemento que se pueda ocultar al minimizar la barra -->
+         <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav nav-pills ">
+               <br>
+               <li >
+                  <a href="#portafolio" class="smoothScroll">
+                     <strong>
+                        <h4>Requirements</h4>
+                     </strong>
+                  </a>
+               </li>
+               <li >
+                  <a href="#user_histories_section" class="smoothScroll">
+                     <strong>
+                        <h4>User Stories</h4>
+                     </strong>
+                  </a>
+               </li>
+               <p class="navbar-text pull-right" class="smoothScroll"><a href="#" class="navbar-link"><strong>Log out</a></p>
+            </ul>
+         </div>
+      </nav>
+      <!-- ==== HEADERWRAP ==== -->
+      <div id="headerwrap" id="home" name="home">
+         <!-- Imagen central en id headerwrap -->
+         <header class="clearfix">
+            <!-- ==== titulo bienvenido ==== -->
+            <div class="container" id="portafolio" name="portfolio">
+               <div class="container">
+                  <br><br><br><br><br>
+                  <br>
+                  <h1 class="text-center">RELEASE <small>{{release.name}}<label id="percentaje_release" name="percentaje_release">{{0}}%</label></small></h1>
+               </div>
+               <!-- /row -->
+            </div>
+         </header>
+      </div>
+      <!-- /headerwrap -->
+      <div class="container">
+         <div class="row">
+            <div id="requirements_section" align="left">
+               <br><br>
+               <h3  class="text-left text-muted">
+                  <strong>
+                     Requirements
+                     <hr>
+                  </strong>
+               </h3>
+            </div>
+            <div align="left" style="padding-top:  1em;">
+               <br><br>
+               <form align="left" class="form-horizontal" role="form" action="#" method="post">
+                  <input type="hidden" name="action" value="add_requirement" />
+                  <div class="form-group">
+                     <label for="ejemplo_email_3" class="col-sm-2 control-label">Requirement</label>
+                     <div class="col-sm-4">
+                        <textArea class="form-control" id="requirements_description_release"
+                           placeholder="Enter the requirement description" name="requirements_description_release"></textArea>
+                     </div>
+                  </div>
+                  <div class="col-sm-offset-3"  class="form-group">
+                     <button  type="submit"  class="btn btn-default">
+                     <span class="glyphicon glyphicon-plus"></span>  Add Requirement
+                     </button>
+                  </div>
+               </form>
+            </div>
+            <!-- Tabla -->
+            <div class="container" style="padding-top:  1em;">
+               <div class="table-responsive">
+                  <table id="table_requirement" name="table_requirement" class="table table-bordered table-striped table-hover">
+                     <thead>
+                        <tr>
+                           <th>
+                              <h5 class="text-left"><strong>Requirement</strong></h5>
+                           </th>
+                           <th></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for req in release.requirements %}
+                        <form action="#" method="post">
+                        <input type="hidden" name="action" value="remove_requirement" />
+                        <input type="hidden" name="index" value="{{loop.index}}" />
+                        <tr>
+                           <td>{{req}}</td>
+                           <td><button type="submit" class="btn btn-default">Eliminar</button></td>
+                        </tr>
+                        </form>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <!-- /Tabla -->
+         </div>
+         <!-- /row -->
+      </div>
+      <!-- /container -->     
+      <div class="container">
+         <div class="row">
+            <div id="user_histories_section" align="left">
+               <br><br><br><br><br><br>
+               <h3  class="text-left text-muted">
+                  <strong>
+                     User Stories
+                     <hr>
+                  </strong>
+               </h3>
+            </div>
+            <div align="left" style="padding-top:  1em;">
+               <br>
+               <form align="left" class="form-horizontal" role="form" action="#" method="post">
+                  <input type="hidden" name="action" value="add_user_story" />
+                  <div class="form-group">
+                     <label for="ejemplo_email_3" class="col-sm-2 control-label">Name</label>
+                     <div class="col-sm-4 ">
+                        <input type="text" class="form-control" id="name_story" name="name_story"
+                           placeholder="Enter the name of the story"></input>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="ejemplo_email_3" class="col-sm-2 control-label">Priority</label>
+                     <div align="left" class="col-sm-1 ">
+                        <input type="number" class="form-control" name="priority_story" id="priority_story">  </input>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="ejemplo_email_3" class="col-sm-2 control-label">Required Days</label>
+                     <div align="left" class="col-sm-1">
+                        <input type="number" class="form-control" name="days_story" id="days_story"></input>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="ejemplo_email_3" class="col-sm-2 control-label">
+                     Responsible Engineer</label>
+                     <div class="col-sm-4 ">
+                        <input type="text" class="form-control" id="responsible_story" name="responsible_story"
+                           placeholder="Enter name of the responsible engineer"></input>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="ejemplo_email_3" class="col-sm-2 control-label">Start Date</label>
+                     <div class="input-append date col-md-4" id="start_date_story" name="start_date_story"  data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                        <input class="span2 form-control" id="input_start_date_story" name="input_start_date_story"  size="16" readonly="" type="text">
+                        <span class="add-on"><i class="icon-th"></i></span>
+                     </div>
+                     <script>
+                        $(function(){
+                           window.prettyPrint && prettyPrint();          
+                           $('#start_date_story').datepicker();                                  
+                        });
+                     </script> 
+                  </div>
+                  <div class="form-group">
+                     <label for="ejemplo_email_3" class="col-sm-2 control-label">Completition Date</label>
+                     <div class="input-append date col-md-4" id="completition_date_story" name="completition_date_story"  data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                        <input class="span2 form-control" id="input_completition_date_story" name="input_completition_date_story"  size="16" readonly="" type="text">
+                        <span class="add-on"><i class="icon-th"></i></span>
+                     </div>
+                     <script>
+                        $(function(){
+                           window.prettyPrint && prettyPrint();          
+                           $('#completition_date_story').datepicker();                                  
+                        });
+                     </script>  
+                  </div>
+                  <div class="form-group">
+                     <label for="ejemplo_email_3" class="col-sm-2 control-label">Percentage</label>
+                     <div class=" col-sm-offset-3 col-sm-1 input-group">
+                        <input type="number" class="form-control " name="percentage_story" id="percentage_story"></input>
+                        <span class="input-group-addon">%</span> 
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="ejemplo_email_3" class="col-sm-2 control-label">Attachment</label>
+                     <div class="col-sm-4 ">
+                        <input type="file" name="attachment_story" id="attachment_story"></input>
+                     </div>
+                  </div>
+                  <div class="col-sm-offset-3"  class="form-group">
+                     <button  type="submit"  class="btn btn-default">
+                     <span class="glyphicon glyphicon-plus"></span>  Add story
+                     </button>
+                  </div>
+               </form>
+            </div>
+         </div>
+         <!-- Tabla -->
+         <div class="container" style="padding-top:  5em;">
+            <div class="table-responsive">
+               <table id="table_histories" name="table_histories" class="table table-bordered table-striped table-hover">
+                  <thead>
+                     <tr>
+                        <th>
+                           <h5 class="text-left"><strong>Name</strong></h5>
+                        </th>
+                        <th>
+                           <h5 class="text-left"><strong>Prority</strong></h5>
+                        </th>
+                        <th>
+                           <h5 class="text-left"><strong>Responsible</strong></h5>
+                        </th>
+                        <th>
+                           <h5 class="text-left"><strong>Start Date</strong></h5>
+                        </th>
+                        <th>
+                           <h5 class="text-left"><strong>Completition Date</strong></h5>
+                        </th>
+                        <th>
+                           <h5 class="text-left"><strong>Percentage %</strong></h5>
+                        </th>
+                        <th>
+                           <h5 class="text-left"><strong>Attachment</strong></h5>
+                        </th>
+                        <th>
+                           <h5 class="text-left"><strong>Complete</strong></h5>
+                        </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for story in release.user_stories %}
+                     <tr>
+                        <td><a href="/story?user_story={{story.key()}}"><strong><u>{{story.name}}</a></td>
+                        <td>{{story.priority}}</td>
+                        <td>{{story.engineer}}</td>
+                        <td>{{story.start_date}}</td>
+                        <td>{{story.end_date}}</td>
+                        <td>{{story.percentage}}</td>
+                        <td><a href=""><strong><u>C:\\Users\Prohect1\doc1.docx</a></td>
+                        <td><input type="checkbox" value=""></td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         <!-- /Tabla -->
+      </div>
+      <br> <br> <br>  <br> <br> <br>
+      <nav class="navbar navbar-default " >
+         <div id="footerwrap">
+            <div align="center">
+               <h4>Created by <a> KillerPollo - Toxa</a> - Copyright 2014</h4>
+            </div>
+         </div>
+      </nav>
+      <!-- Bootstrap core JavaScript
+         ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="assets/js/retina.js"></script>
+      <script type="text/javascript" src="assets/js/jquery.easing.1.3.js"></script>
+      <script type="text/javascript" src="assets/js/smoothscroll.js"></script>
+      <script type="text/javascript" src="assets/js/jquery-func.js"></script>
+      <script src="assets/js/jquery.prettyPhoto.js"></script>
+      <script src="assets/js/main.js"></script>
+   </body>
+</html>
+
