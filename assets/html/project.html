@@ -405,8 +405,16 @@
                         <td><a href="/release?release={{release.key()}}"><u>{{release.name}}</a></td>
                         <td>{{release.description}}</td>
                         <td>{{release.release_date}}</td>
-                        <td>{{release.percentage}}</td>
-                        <td><input type="checkbox" value=""></td>
+                        <td>{{release.project_percentage}}</td>
+                        {% if release.complete %}
+                        <td><input type="checkbox" checked disabled></td>
+                        {% else %}
+                        <form action="#" method="post">
+                        <input type="hidden" name="action" value="complete_release" />
+                        <input type="hidden" name="release" value="{{release.key()}}" />
+                        <td><input type="checkbox" onChange="this.form.submit();"></td>
+                        </form>
+                        {% endif %}
                      </tr>
                      {% endfor %}
                   </tbody>

@@ -124,7 +124,15 @@
                         <tr>
                            <td>{{test.name}}</td>
                            <td><a href=""><strong><u>C:\\users\desktop\doc.docx</a></td>
-                           <td><input type="checkbox" value=""></td>
+                           {% if test.complete %}
+                           <td><input type="checkbox" checked disabled></td>
+                           {% else %}
+                           <form action="#" method="post">
+                           <input type="hidden" name="action" value="complete_test" />
+                           <input type="hidden" name="test" value="{{test.key()}}" />
+                           <td><input type="checkbox" onChange="this.form.submit();"></td>
+                           </form>
+                           {% endif %}
                         </tr>
                         {% endfor %}
                      </tbody>

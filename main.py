@@ -133,6 +133,11 @@ class ProjectPage(webapp2.RequestHandler):
             percentage = self.request.get("percentage_release")
             models.add_release(name, description, release_date, percentage, project)
             post = "#releases_section"
+        # Completar release
+        elif action == "complete_release":
+            release = models.get(self.request.get("release"))
+            models.complete_release(release)
+            post = "#releases_section"
 
         project.put()
         self.redirect("/project?project=" + str(project.key()) + post)
@@ -176,6 +181,11 @@ class ReleasePage(webapp2.RequestHandler):
             del release.requirements[index]
             release.put()
             post = "#portafolio"
+        # Completar una historia de usuario
+        elif action == "complete_user_story":
+            user_story = models.get(self.request.get("user_story"))
+            models.complete_user_story(user_story)
+            post = "#user_histories_section"
 
         self.redirect("/release?release=" + str(release.key()) + post)
 
@@ -204,6 +214,10 @@ class UserStoryPage(webapp2.RequestHandler):
             percentage = self.request.get("percentage_task")
             models.add_task(
                 name, description, priority, start_date, required_hours, percentage, user_story)
+        # Completamos un task
+        elif action == "complete_task":
+            task = models.get(self.request.get("task"))
+            models.complete_task(task)
 
         self.redirect("/story?user_story=" + str(user_story.key()))
 
@@ -226,6 +240,10 @@ class TaskPage(webapp2.RequestHandler):
         if action == "add_test":
             name = self.request.get("name_test")
             models.add_test(name, task)
+        # Completamos un test
+        elif action == "complete_test":
+            test = models.get(self.request.get("test"))
+            models.complete_test(test)
 
         self.redirect("/task?task=" + str(task.key()))
 

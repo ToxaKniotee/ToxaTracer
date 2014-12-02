@@ -172,8 +172,16 @@
                            <td>{{task.description}}</td>
                            <td>{{task.start_date}}</td>
                            <td>{{task.required_hours}}</td>
-                           <td>{{task.percentage}}</td>
-                           <td><input type="checkbox" value=""></td>
+                           <td>{{task.user_story_percentage}}</td>
+                           {% if task.complete %}
+                           <td><input type="checkbox" checked disabled></td>
+                           {% else %}
+                           <form action="#" method="post">
+                           <input type="hidden" name="action" value="complete_task" />
+                           <input type="hidden" name="task" value="{{task.key()}}" />
+                           <td><input type="checkbox" onChange="this.form.submit();"></td>
+                           </form>
+                           {% endif %}
                         </tr>
                         {% endfor %}
                      </tbody>

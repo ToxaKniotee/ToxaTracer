@@ -59,7 +59,7 @@
                <div class="container">
                   <br><br><br><br><br>
                   <br>
-                  <h1 class="text-center">RELEASE <small>{{release.name}}<label id="percentaje_release" name="percentaje_release">{{0}}%</label></small></h1>
+                  <h1 class="text-center">RELEASE <small>{{release.name}}<label id="percentaje_release" name="percentaje_release">{{release.percentage}}%</label></small></h1>
                </div>
                <!-- /row -->
             </div>
@@ -256,9 +256,17 @@
                         <td>{{story.engineer}}</td>
                         <td>{{story.start_date}}</td>
                         <td>{{story.end_date}}</td>
-                        <td>{{story.percentage}}</td>
+                        <td>{{story.release_percentage}}</td>
                         <td><a href=""><strong><u>C:\\Users\Prohect1\doc1.docx</a></td>
-                        <td><input type="checkbox" value=""></td>
+                        {% if story.complete %}
+                        <td><input type="checkbox" checked disabled></td>
+                        {% else %}
+                        <form action="#" method="post">
+                        <input type="hidden" name="action" value="complete_user_story" />
+                        <input type="hidden" name="user_story" value="{{story.key()}}" />
+                        <td><input type="checkbox" onChange="this.form.submit();"></td>
+                        </form>
+                        {% endif %}
                      </tr>
                      {% endfor %}
                   </tbody>

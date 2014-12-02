@@ -1,6 +1,7 @@
 from google.appengine.ext import db
 from gaesessions import get_current_session
 import datetime
+import time
 
 def get(key):
     return db.get(key)
@@ -146,7 +147,9 @@ class Release(db.Model):
     description = db.StringProperty()
     release_date = db.DateProperty()
     percentage = db.IntegerProperty()
+    project_percentage = db.IntegerProperty()
     requirements = db.StringListProperty()
+    complete = db.BooleanProperty()
     project = db.ReferenceProperty(Project, collection_name="releases")
 
 def add_release(name, description, release_date, percentage, project):
@@ -154,9 +157,17 @@ def add_release(name, description, release_date, percentage, project):
     temp_release.name = name
     temp_release.description = description
     temp_release.release_date = datetime.datetime.strptime(release_date, "%d-%m-%Y").date()
-    temp_release.percentage = int(percentage)
+    temp_release.percentage = 0
+    temp_release.project_percentage = int(percentage)
     temp_release.project = project
     temp_release.put()
+
+def complete_release(release):
+    release.complete = True
+    release.put()
+    release.project.percentage += release.project_percentage
+    release.project.put()
+    time.sleep(0.2)
 
 ####################################################################################################
 ## User's Stories                                                                                 ##
@@ -170,6 +181,8 @@ class UserStory(db.Model):
     start_date = db.DateProperty()
     end_date = db.DateProperty()
     percentage = db.IntegerProperty()
+    release_percentage = db.IntegerProperty()
+    complete = db.BooleanProperty()
     release = db.ReferenceProperty(Release, collection_name="user_stories")
 
 def add_user_story(name, priority, required_days, engineer, start_date, end_date, percentage, release):
@@ -180,10 +193,18 @@ def add_user_story(name, priority, required_days, engineer, start_date, end_date
     temp_story.engineer = engineer
     temp_story.start_date = datetime.datetime.strptime(start_date, "%d-%m-%Y").date()
     temp_story.end_date = datetime.datetime.strptime(end_date, "%d-%m-%Y").date()
-    temp_story.percentage = int(percentage)
+    temp_story.percentage = 0
+    temp_story.release_percentage = int(percentage)
     temp_story.release = release
     temp_story.put()
     return temp_story
+
+def complete_user_story(user_story):
+    user_story.complete = True
+    user_story.put()
+    user_story.release.percentage += user_story.release_percentage
+    user_story.release.put()
+    time.sleep(0.2)
 
 ####################################################################################################
 ## Tasks                                                                                          ##
@@ -196,6 +217,8 @@ class Task(db.Model):
     start_date = db.DateProperty()
     required_hours = db.IntegerProperty()
     percentage = db.IntegerProperty()
+    user_story_percentage = db.IntegerProperty()
+    complete = db.BooleanProperty()
     user_story = db.ReferenceProperty(UserStory, collection_name="tasks")
 
 def add_task(name, description, priority, start_date, required_hours, percentage, user_story):
@@ -205,10 +228,31 @@ def add_task(name, description, priority, start_date, required_hours, percentage
     temp_task.priority = int(priority)
     temp_task.start_date = datetime.datetime.strptime(start_date, "%d-%m-%Y").date()
     temp_task.required_hours = int(required_hours)
-    temp_task.percentage = int(percentage)
+    temp_task.percentage = 0
+    temp_task.user_story_percentage = int(percentage)
     temp_task.user_story = user_story
     temp_task.put()
     return temp_task
+
+def calculate_task_percentage(task):
+    time.sleep(0.2)
+    total = 0
+    complete = 0
+    for test in task.tests:
+        total += 1
+        if test.complete:
+            complete += 1
+    if total == 0:
+        return
+    task.percentage = (complete * 100) / total
+    task.put()
+
+def complete_task(task):
+    task.complete = True
+    task.put()
+    task.user_story.percentage += task.user_story_percentage
+    task.user_story.put()
+    time.sleep(0.2)
 
 ####################################################################################################
 ## Tests                                                                                          ##
@@ -216,11 +260,19 @@ def add_task(name, description, priority, start_date, required_hours, percentage
 
 class Test(db.Model):
     name = db.StringProperty()
+    complete = db.BooleanProperty()
     task = db.ReferenceProperty(Task, collection_name="tests")
 
 def add_test(name, task):
     temp_test = Test()
     temp_test.name = name
     temp_test.task = task
+    temp_test.complete = False
     temp_test.put()
+    calculate_task_percentage(task)
     return temp_test
+
+def complete_test(test):
+    test.complete = True
+    test.put()
+    calculate_task_percentage(test.task)
